@@ -33,6 +33,12 @@ class Find_id extends JFrame{
 		//버튼의 내용을 투명하게 해준다
 		phonebtn.setContentAreaFilled(false);
 		
+		phonebtn.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) { 
+				//DB 내용 끌여들어와서 확인해줘야 함.
+				JOptionPane.showMessageDialog(null, "아이디는 jooyoung1948 입니다","check id",JOptionPane.ERROR_MESSAGE);
+			}
+		}); 
 		
 		setBounds(80,50,1800,1000);
 		setVisible(true);
