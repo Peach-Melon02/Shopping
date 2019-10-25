@@ -1,6 +1,8 @@
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
@@ -41,6 +43,16 @@ public class Find_pwd extends JFrame{
 		find_phone.setFont(new Font("메이플스토리 OTF",Font.ITALIC,35));
 		findphone.setFont(new Font("맑은고딕",Font.ITALIC,20));
 		findpwdbtn.setFont(new Font("메이플스토리 OTF",Font.ITALIC,25));
+		
+		//버튼의 내용을 투명하게 해준다
+		findpwdbtn.setContentAreaFilled(false);
+		
+		findpwdbtn.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) { 
+				//DB 내용 끌여들어와서 확인해줘야 함.
+				JOptionPane.showMessageDialog(null, "jooyoung1948님의 \n비밀번호는 joo1948! 입니다.","check pwd",JOptionPane.ERROR_MESSAGE);
+			}
+		}); 
 		
 		setBounds(80,50,1800,1000);
 		setVisible(true);
