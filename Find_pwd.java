@@ -1,6 +1,4 @@
-import java.awt.Container;
-import java.awt.FlowLayout;
-import java.awt.Font;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -12,7 +10,7 @@ public class Find_pwd extends JFrame{
 	JTextField id_pwd, findphone;
 	JButton findpwdbtn;
 	
-	public Find_pwd() {
+	public Find_pwd() { 
 		setTitle("PeachMelon 비밀번호 찾기");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Container c = getContentPane();
@@ -25,11 +23,28 @@ public class Find_pwd extends JFrame{
 		id_pwd = new JTextField("");
 		findpwdbtn = new JButton("확인");
 		
-		c.add(find_id);
-		c.add(id_pwd);
-		c.add(find_phone);
-		c.add(findphone);
-		c.add(findpwdbtn);
+		
+		//배경 이미지
+		ImageIcon display_pwd = new ImageIcon("images/alldisplay.png");
+		Image dispaly_pwd2 = display_pwd.getImage();
+		
+		JPanel image = new JPanel() {//배경 넣기
+			public void paintComponent(Graphics g) {
+				g.drawImage(dispaly_pwd2,0,0,getWidth(),getHeight(),this);
+				setOpaque(false);
+				super.paintComponent(g);
+			}
+		};
+		
+		image.setLayout(null);
+		JScrollPane scrollPane = new JScrollPane(image);
+		setContentPane(scrollPane);
+		
+		image.add(find_id);
+		image.add(id_pwd);
+		image.add(find_phone);
+		image.add(findphone);
+		image.add(findpwdbtn);
 		
 		
 		find_id.setBounds(600, 460, 200, 100);
@@ -54,7 +69,7 @@ public class Find_pwd extends JFrame{
 			}
 		}); 
 		
-		setBounds(80,50,1800,1000);
+		setBounds(80,50,1800,1000); 
 		setVisible(true);
 	}
 	public static void main(String[] args) {
