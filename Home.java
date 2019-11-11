@@ -6,32 +6,34 @@ public class Home extends JFrame {
 		setTitle("Book shop");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Container c = getContentPane();
-		c.setLayout(new FlowLayout()); 
+		c.setLayout(new FlowLayout());  
 		c.setLayout(null); 
 		 
 		JTextField id=new JTextField(""); //ID입력란
 		JTextField pw=new JTextField(""); //PW입력란
 		
-		JButton findID=new JButton(" "); //아이디 찾기
-		JButton findPW=new JButton(" "); //비밀번호 찾기
-		JButton Login=new JButton(" "); //로그인 
-		JButton AddInfor=new JButton(" "); //회원가입
+		JButton findID=new JButton("ID찾기"); //아이디 찾기
+		JButton findPW=new JButton("PW 찾기"); //비밀번호 찾기
+		JButton Login=new JButton("로그인"); //로그인 
+		JButton AddInfor=new JButton("회원가입"); //회원가입
 		JButton devbtn = new JButton(" ");//개발과
 		JButton designbtn = new JButton(" ");//디자인과
 		JButton basebtn = new JButton(" ");//인문과 
-		
+
+	
 		   
-		ImageIcon display = new ImageIcon("images/bookshopmain.png"); //배경 이미지
+		ImageIcon display = new ImageIcon("images/1.jpg"); //배경 이미지
 		Image display_1= display.getImage();
 		 
 		JPanel image = new JPanel() {//배경 넣기 
 			
 			public void paintComponent(Graphics g) {
-				g.drawImage(display_1,0,0,getWidth(),getHeight(),this);
+				g.drawImage(display_1,0,0,1781,950,this);
 				setOpaque(false);
 				super.paintComponent(g);
 			} 
 		};
+		
 		
 		//TextField
 		image.add(id);
@@ -48,20 +50,19 @@ public class Home extends JFrame {
 		image.add(devbtn);
 		image.add(designbtn);
 		image.add(basebtn);
-		image.add(designbtn);
-		image.add(basebtn);
 		
-		
-		findID.setBounds(1340,329,140,45);  // x, y, 가로, 세로
-		findPW.setBounds(1510,329,140,45);
-		Login.setBounds(1340,390,140,45);
-		AddInfor.setBounds(1510,390,140,45);
+		findID.setBounds(1360,329,120,45);  // x, y, 가로, 세로
+		findPW.setBounds(1527,329,120,45);
+		Login.setBounds(1360,390,120,45);
+		AddInfor.setBounds(1527,390,120,45);
 		devbtn.setBounds(673,250,140,45);
-		designbtn.setBounds(890,250,140,45);
+	    designbtn.setBounds(890,250,140,45);
 		basebtn.setBounds(1137,250,140,45);
 		
-		
-		
+		findID.setFont(new Font("배달의민족 도현",Font.CENTER_BASELINE, 20));
+		findPW.setFont(new Font("배달의민족 도현", Font.CENTER_BASELINE, 20));
+		Login.setFont(new Font("배달의민족 도현", Font.CENTER_BASELINE, 20)); 
+		AddInfor.setFont(new Font("배달의민족 도현", Font.CENTER_BASELINE, 20));
 		//버튼을 투명하게 바꿔준다
 		findID.setContentAreaFilled(false); 
 		findPW.setContentAreaFilled(false);
@@ -70,7 +71,6 @@ public class Home extends JFrame {
 		devbtn.setContentAreaFilled(false);
 		designbtn.setContentAreaFilled(false);
 		basebtn.setContentAreaFilled(false);
-		
 		 
 		//버튼선택후에 생기는 표시 없앰
 		findID.setFocusPainted(false);
@@ -82,85 +82,74 @@ public class Home extends JFrame {
 		basebtn.setFocusPainted(false);
 		
 		//버튼의 테두리를 투명하게 해준다
-		//devbtn.setBorderPainted(false);
-		//designbtn.setBorderPainted(false);
-		//basebtn.setBorderPainted(false);
+		devbtn.setBorderPainted(false);
+		designbtn.setBorderPainted(false);
+		basebtn.setBorderPainted(false);
 		
+		//창 이동
+		findID.addActionListener(new Findid());
+		findPW.addActionListener(new Findpw());
+		Login.addActionListener(new LOgin());
+		AddInfor.addActionListener(new Inforadd());
+		devbtn.addActionListener(new Dev());
+		designbtn.addActionListener(new Design());
+		basebtn.addActionListener(new Base());
 		
 		image.setLayout(null);
 		
 		JScrollPane scrollPane=new JScrollPane(image);
 		setContentPane(scrollPane);
 		
-		 
-		
-		//다른 창으로 넘어가기_아이디 찾기 눌렀을 때
-		findID.addActionListener(new ActionListener() {
-
-			@Override 
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				new Find_id();
-			}
-			
-		});
-		//다른 창으로 넘어가기_비밀번호 찾기 눌렀을 때
-		findPW.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				new Find_pwd();
-			}
-			
-		});
-		//다른창으로 넘어가기_로그인 눌렀을 때
-		Login.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				new Sign_in();
-				 
-			}
-		});
-		//다른창으로 넘어가기_회원가입 눌렀을 때
-		AddInfor.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
-				new SignUp();
-			}
-		});
-		devbtn.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				new Devdisplay();
-			}
-			
-		});
-		designbtn.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				new Designdisplay();
-			}
-			
-		});
-		basebtn.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				new Basedisplay();
-			}
-			
-		});
-	
-		
-		setBounds(80,50,1800,1000);
+		setBounds(80,20,1800,1000);
 		setVisible(true);
 	}
+} 
+
+class Findid implements ActionListener{
+		@Override 
+		public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		new Find_id();
+	}
+}
+class Findpw implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {			
+			// TODO Auto-generated method stub
+				new Find_pwd();
+	}
+}
+class LOgin implements ActionListener{
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		new Sign_in();
+					 
+	}
+}
+class Inforadd implements ActionListener{
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+					
+		new SignUp();
+	}
+}
+class Dev implements ActionListener{
+	@Override
+		public void actionPerformed(ActionEvent arg0) {
+			// TODO Auto-generated method stub
+			new Devdisplay();
+		}
+}
+class Design implements ActionListener{
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		new Designdisplay();
+	}
+}
+class Base implements ActionListener{
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		new Basedisplay();
+		}
 }
