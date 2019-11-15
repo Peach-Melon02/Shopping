@@ -2,12 +2,17 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 public class Home extends JFrame {
+	
 	public Home() {
 		setTitle("Book shop");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		JFrame f = new JFrame("Book Shop");
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		Image img = toolkit.getImage("bookicon.jpg");
+		f.setIconImage(img);
+		
 		Container c = getContentPane();
 		c.setLayout(new FlowLayout());  
-		c.setLayout(null); 
 		 
 		JTextField id=new JTextField(""); //ID입력란
 		JTextField pw=new JTextField(""); //PW입력란
@@ -22,7 +27,7 @@ public class Home extends JFrame {
 
 	
 		   
-		ImageIcon display = new ImageIcon("images/1.jpg"); //배경 이미지
+		ImageIcon display = new ImageIcon("images/alldisplay.png"); //배경 이미지
 		Image display_1= display.getImage();
 		 
 		JPanel image = new JPanel() {//배경 넣기 
@@ -33,7 +38,10 @@ public class Home extends JFrame {
 				super.paintComponent(g);
 			} 
 		};
+		image.setLayout(null);
 		
+		JScrollPane scrollPane=new JScrollPane(image);
+		setContentPane(scrollPane);
 		
 		//TextField
 		image.add(id);
@@ -94,11 +102,6 @@ public class Home extends JFrame {
 		devbtn.addActionListener(new Dev());
 		designbtn.addActionListener(new Design());
 		basebtn.addActionListener(new Base());
-		
-		image.setLayout(null);
-		
-		JScrollPane scrollPane=new JScrollPane(image);
-		setContentPane(scrollPane);
 		
 		setBounds(80,20,1800,1000);
 		setVisible(true);
