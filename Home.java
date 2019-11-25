@@ -1,33 +1,52 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-public class Home extends JFrame {
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+public class Home extends JFrame implements ActionListener {
+	
+	JTextField id=new JTextField(""); //ID입력란
+	JTextField pw=new JTextField(""); //PW입력란
+	
+	JButton findID=new JButton("ID찾기"); //아이디 찾기
+	JButton findPW=new JButton("PW 찾기"); //비밀번호 찾기
+	JButton Login=new JButton("로그인"); //로그인 
+	JButton AddInfor=new JButton("회원가입"); //회원가입
+	JButton devbtn = new JButton(" ");//개발과
+	JButton designbtn = new JButton(" ");//디자인과
+	JButton basebtn = new JButton(" ");//인문과 
+	
+	private PreparedStatement pstmt = null;
+	private Connection conn = null;
+	private ResultSet view = null;
 	
 	public Home() {
+		
+		try { 
+			Class.forName("org.gjt.mm.mysql.Driver");
+			conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/shopping","root","mirim2");//jdbc에 연결하귀~~~~~~~~
+			//pstmt = conn.prepareStatement(sql); 
+		}catch(ClassNotFoundException e) {
+			handleError(e.getMessage());
+		}catch (SQLException e) {
+			handleError(e.getMessage());
+		}	
+		
+		
 		setTitle("Book shop");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JFrame f = new JFrame("Book Shop");
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		Image img = toolkit.getImage("bookicon.jpg");
 		f.setIconImage(img);
-		
+		 
 		Container c = getContentPane();
 		c.setLayout(new FlowLayout());  
-		 
-		JTextField id=new JTextField(""); //ID입력란
-		JTextField pw=new JTextField(""); //PW입력란
-		
-		JButton findID=new JButton("ID찾기"); //아이디 찾기
-		JButton findPW=new JButton("PW 찾기"); //비밀번호 찾기
-		JButton Login=new JButton("로그인"); //로그인 
-		JButton AddInfor=new JButton("회원가입"); //회원가입
-		JButton devbtn = new JButton(" ");//개발과
-		JButton designbtn = new JButton(" ");//디자인과
-		JButton basebtn = new JButton(" ");//인문과 
-
-	
 		   
-		ImageIcon display = new ImageIcon("images/alldisplay.png"); //배경 이미지
+		ImageIcon display = new ImageIcon("images/alldisplay.jpg"); //배경 이미지
 		Image display_1= display.getImage();
 		 
 		JPanel image = new JPanel() {//배경 넣기 
@@ -87,7 +106,7 @@ public class Home extends JFrame {
 		AddInfor.setFocusPainted(false);
 		devbtn.setFocusPainted(false);
 		designbtn.setFocusPainted(false);
-		basebtn.setFocusPainted(false);
+		basebtn.setFocusPainted(false); 
 		
 		//버튼의 테두리를 투명하게 해준다
 		devbtn.setBorderPainted(false);
@@ -95,64 +114,67 @@ public class Home extends JFrame {
 		basebtn.setBorderPainted(false);
 		
 		//창 이동
-		findID.addActionListener(new Findid());
-		findPW.addActionListener(new Findpw());
-		Login.addActionListener(new LOgin());
-		AddInfor.addActionListener(new Inforadd());
-		devbtn.addActionListener(new Dev());
-		designbtn.addActionListener(new Design());
-		basebtn.addActionListener(new Base());
+		findID.addActionListener(this);
+		findPW.addActionListener(this);
+		Login.addActionListener(this);
+		AddInfor.addActionListener(this);
+		devbtn.addActionListener(this);
+		designbtn.addActionListener(this);
+		basebtn.addActionListener(this);
 		
 		setBounds(80,20,1800,1000);
 		setVisible(true);
 	}
-} 
-
-class Findid implements ActionListener{
-		@Override 
-		public void actionPerformed(ActionEvent e) {
+	private void handleError(String message) {
 		// TODO Auto-generated method stub
-		new Find_id();
+		System.out.println("문제 : "+ message);
+		System.exit(1);
 	}
-}
-class Findpw implements ActionListener{
-		@Override
-		public void actionPerformed(ActionEvent e) {			
-			// TODO Auto-generated method stub
-				new Find_pwd();
-	}
-}
-class LOgin implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		new Sign_in();
-					 
+		if(e.getSource()==findID) new Find_id();
+		if(e.getSource()==findPW) new Find_pwd();
+		if(e.getSource()==Login) {
+			String idtext = id.getText();
+			String pwtext = pw.getText();
+			CheckIdPw(idtext, pwtext);
+		}
+		if(e.getSource()==AddInfor) new SignUp();
+		if(e.getSource()==devbtn) new Devdisplay();
+		if(e.getSource()==designbtn) new Designdisplay();
+		if(e.getSource()==basebtn) new BasicSubject1();
 	}
-}
-class Inforadd implements ActionListener{
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+	
+	private void CheckIdPw(String idtext, String pwtext) {
+		try{
+			System.out.println("id : |"+idtext+", pwd : |"+pwtext+"|");
+			String sql = "select id, pw from info where id = ? and pw = ?";
+		
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setString(1, idtext);
+			pstmt.setString(2, pwtext);
+			view=pstmt.executeQuery();
+		
+		
+			if(view.next()) {
+		
+			String strId= view.getString("id");
+			String strPw=view.getString("pw");
+				if(idtext.equals(strId)||pwtext.equals(strPw)) {
+					new Sign_in();
+					id.setText("");
+					pw.setText(""); 
+				}else {   
+					int result=JOptionPane.showConfirmDialog(null, "아이디 혹은 비밀번호가 틀렸습니다." , "로그인",JOptionPane.ERROR_MESSAGE);
+					if(result==JOptionPane.YES_OPTION) {
+						id.setText("");
+						pw.setText("");
+					}
 					
-		new SignUp();
-	}
-}
-class Dev implements ActionListener{
-	@Override
-		public void actionPerformed(ActionEvent arg0) {
-			// TODO Auto-generated method stub
-			new Devdisplay();
+				}
+			}	
+		}catch (SQLException e) {
+			handleError(e.getMessage());
 		}
-}
-class Design implements ActionListener{
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		new Designdisplay();
 	}
-}
-class Base implements ActionListener{
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		new Basedisplay();
-		}
 }
